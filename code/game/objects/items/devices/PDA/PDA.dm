@@ -200,8 +200,6 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 	var/datum/asset/spritesheet/assets = get_asset_datum(/datum/asset/spritesheet/simple/pda)
 	assets.send(user)
-	register_asset("common.js", 'html/browser/common.js')
-	send_asset_list(user, list("common.js" = 'html/browser/common.js'), verify=FALSE)
 
 	user.set_machine(src)
 
@@ -245,7 +243,6 @@ GLOBAL_LIST_EMPTY(PDAs)
 				dat += "<ul>"
 				dat += "<li><a href='byond://?src=[REF(src)];choice=1'>[PDAIMG(notes)]Notekeeper</a></li>"
 				dat += "<li><a href='byond://?src=[REF(src)];choice=2'>[PDAIMG(mail)]Messenger</a></li>"
-
 				if (cartridge)
 					if (cartridge.access & CART_CLOWN)
 						dat += "<li><a href='byond://?src=[REF(src)];choice=Honk'>[PDAIMG(honk)]Honk Synthesizer</a></li>"
@@ -281,7 +278,10 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 				dat += "<h4>Utilities</h4>"
 				dat += "<ul>"
+
 				if (cartridge)
+					if(ownjob != "Assistant")
+						dat += "<li><a href='byond://?src=[REF(src)];choice=Assistant Pager'>[PDAIMG(dronephone)]Assistant Pager</a></li>"
 					if(cartridge.bot_access_flags)
 						dat += "<li><a href='byond://?src=[REF(src)];choice=54'>[PDAIMG(medbot)]Bots Access</a></li>"
 					if (cartridge.access & CART_JANITOR)
@@ -305,6 +305,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 					else if (cartridge.access & CART_SECURITY)
 						dat += "<li><a href='byond://?src=[REF(src)];choice=print;paper=[PDA_PRINTING_SECURITY_INCIDENT_REPORT]'>[PDAIMG(notes)]Print Security Incident Report Form</a></li>"
 						dat += "<li><a href='byond://?src=[REF(src)];choice=print;paper=[PDA_PRINTING_INCIDENT_REPORT]'>[PDAIMG(notes)]Print Incident Report Form</a></li>"
+				if(id && id.registered_account && id.registered_account.account_job.paycheck_department)
+					dat += "<li><a href='byond://?src=[REF(src)];choice=6'>[PDAIMG(notes)]Show Department Goals</a></li>"
 				dat += "<li><a href='byond://?src=[REF(src)];choice=3'>[PDAIMG(atmos)]Atmospheric Scan</a></li>"
 				dat += "<li><a href='byond://?src=[REF(src)];choice=Light'>[PDAIMG(flashlight)][fon ? "Disable" : "Enable"] Flashlight</a></li>"
 				if (pai)
@@ -406,6 +408,19 @@ GLOBAL_LIST_EMPTY(PDAs)
 				dat += "<li><a href='byond://?src=[REF(src)];choice=print;paper=[PDA_PRINTING_JOB_REASSIGNMENT_CERTIFICATE]'>Job Reassignment Certificate</a></li>"
 				dat += "</ul>"
 
+			// I swear, whoever thought that these magical numbers were a good way to create a menu was a good idea should be fucking shot.
+			if(6)
+				if(!id || !id.registered_account || !id.registered_account.account_job.paycheck_department)
+					mode = 0
+					return
+				var/dep_account = id.registered_account.account_job.paycheck_department
+				dat += "<h4>Department Goals for the [SSYogs.getDepartmentFromAccount(dep_account)] department:</h4><ul>"
+				for(var/datum/department_goal/dg in SSYogs.department_goals)
+					if(dg.account == dep_account)
+						dat += "<li>[dg.name]:</li>"
+						dat += "<li>[dg.desc]</li><br>"
+				dat += "</ul>"
+
 			else//Else it links to the cart menu proc. Although, it really uses menu hub 4--menu 4 doesn't really exist as it simply redirects to hub.
 				dat += cartridge.generate_menu()
 
@@ -459,7 +474,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 					mode = 0
 				else
 					mode = round(mode/10)
-					if(mode==4 || mode == 5)//Fix for cartridges. Redirects to hub. 
+					if(mode==4 || mode == 5)//Fix for cartridges. Redirects to hub.
 						mode = 0
 			if ("Authenticate")//Checks for ID
 				id_check(U)
@@ -493,6 +508,11 @@ GLOBAL_LIST_EMPTY(PDAs)
 				mode = 0
 			if("5") //Paperwork Printer
 				mode = 5
+			if("6") // Department goals
+				if(!id || !id.registered_account || !id.registered_account.account_job.paycheck_department)
+					mode = 0
+					return
+				mode = 6
 
 
 //MAIN FUNCTIONS===================================
@@ -534,6 +554,9 @@ GLOBAL_LIST_EMPTY(PDAs)
 					var/msg = "<span class='boldnotice'>NON-DRONE PING: [U.name]: [alert_s] priority alert in [A.name]!</span>"
 					_alert_drones(msg, TRUE, U)
 					to_chat(U, msg)
+			if("Assistant Pager")
+				ping_assistants(U)
+
 
 
 //NOTEKEEPER FUNCTIONS===================================
@@ -753,7 +776,10 @@ GLOBAL_LIST_EMPTY(PDAs)
 	tnote += signal
 
 	if (!silent)
-		playsound(src, 'sound/machines/twobeep_high.ogg', 50, 1)
+		if(HAS_TRAIT(SSstation, STATION_TRAIT_PDA_GLITCHED))
+			playsound(src, pick('sound/machines/twobeep_voice1.ogg', 'sound/machines/twobeep_voice2.ogg'), 50, TRUE)
+		else
+			playsound(src, 'sound/machines/twobeep_high.ogg', 50, TRUE)
 		audible_message("[icon2html(src, hearers(src))] *[ttone]*", null, 3)
 	//Search for holder of the PDA.
 	var/mob/living/L = null
@@ -779,11 +805,46 @@ GLOBAL_LIST_EMPTY(PDAs)
 	update_icon()
 	add_overlay(icon_alert)
 
+/obj/item/pda/proc/receive_ping(message)
+	if (!silent)
+		if(HAS_TRAIT(SSstation, STATION_TRAIT_PDA_GLITCHED))
+			playsound(src, pick('sound/machines/twobeep_voice1.ogg', 'sound/machines/twobeep_voice2.ogg'), 50, TRUE)
+		else
+			playsound(src, 'sound/machines/twobeep_high.ogg', 50, TRUE)
+		audible_message("[icon2html(src, hearers(src))] *[ttone]*", null, 3)
+
+	var/mob/living/L = null
+	if(loc && isliving(loc))
+		L = loc
+	//Maybe they are a pAI!
+	else
+		L = get(src, /mob/living/silicon)
+
+	if(L && L.stat != UNCONSCIOUS)
+		to_chat(L, message)
+
 /obj/item/pda/proc/send_to_all(mob/living/U)
 	if (last_everyone && world.time < last_everyone + PDA_SPAM_DELAY)
 		to_chat(U,"<span class='warning'>Send To All function is still on cooldown.</span>")
 		return
 	send_message(U,get_viewable_pdas(), TRUE)
+
+/obj/item/pda/proc/ping_assistants(mob/living/U)
+	if (last_everyone && world.time < last_everyone + PDA_SPAM_DELAY)
+		to_chat(U,"<span class='warning'>Function is still on cooldown.</span>")
+		return
+
+	var/area/A = get_area(U)
+	var/toSend = stripped_input(U, "Please enter your issue.")
+
+	if(!toSend)
+		return
+
+	toSend = "Assistant requested by [owner] at [A]! Reason: [toSend]"
+
+	last_everyone = world.time
+	for(var/obj/item/pda/P in get_viewable_assistant_pdas())
+		P.receive_ping(toSend)
 
 /obj/item/pda/proc/create_message(mob/living/U, obj/item/pda/P)
 	send_message(U,list(P))
@@ -986,7 +1047,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 	if (ismob(loc))
 		var/mob/M = loc
-		M.show_message("<span class='userdanger'>Your [src] explodes!</span>", 1)
+		M.show_message("<span class='userdanger'>Your [src] explodes!</span>", MSG_VISUAL, "<span class='warning'>You hear a loud *pop*!</span>", MSG_AUDIBLE)
 	else
 		visible_message("<span class='danger'>[src] explodes!</span>", "<span class='warning'>You hear a loud *pop*!</span>")
 
@@ -1075,7 +1136,16 @@ GLOBAL_LIST_EMPTY(PDAs)
 	if(incapacitated())
 		return
 	if(!isnull(aiPDA))
-		var/HTML = "<html><head><meta charset='UTF-8'><title>AI PDA Message Log</title></head><body>[aiPDA.tnote]</body></html>"
+		//Build the message list
+		var/dat
+		for(var/x in aiPDA.tnote)
+			if(istext(x)) // If it's literally just text
+				dat += aiPDA.tnote
+			else // It's hopefully a signal
+				var/datum/signal/subspace/messaging/pda/sig = x
+				dat += "<b>[sig.data["name"]]([sig.data["job"]])<i> (<a href='byond://?src=[REF(src.aiPDA)];choice=Message;target=[REF(sig.source)]'>Reply</a>) (<a href='?src=[REF(usr)];track=[html_encode(sig.data["name"])]'>Track</a>):</b></i><br>[sig.format_message(user)]<br>"
+				dat += "<br>"
+		var/HTML = "<html><head><meta charset='UTF-8'><title>AI PDA Message Log</title></head><body>[dat]</body></html>"
 		user << browse(HTML, "window=log;size=400x444;border=1;can_resize=1;can_close=1;can_minimize=0")
 	else
 		to_chat(user, "You do not have a PDA. You should make an issue report about this.")
@@ -1107,7 +1177,16 @@ GLOBAL_LIST_EMPTY(PDAs)
 	if(incapacitated())
 		return
 	if(!isnull(aiPDA))
-		var/HTML = "<html><head><meta charset='UTF-8'><title>AI PDA Message Log</title></head><body>[aiPDA.tnote]</body></html>"
+		//Build the message list
+		var/dat
+		for(var/x in aiPDA.tnote)
+			if(istext(x)) // If it's literally just text
+				dat += aiPDA.tnote
+			else // It's hopefully a signal
+				var/datum/signal/subspace/messaging/pda/sig = x
+				dat += "<b>[sig.data["name"]]([sig.data["job"]])<i> (<a href='byond://?src=[REF(src.aiPDA)];choice=Message;target=[REF(sig.source)]'>Reply</a>):</b></i><br>[sig.format_message(user)]<br>"
+				dat += "<br>"
+		var/HTML = "<html><head><meta charset='UTF-8'><title>AI PDA Message Log</title></head><body>[dat]</body></html>"
 		user << browse(HTML, "window=log;size=400x444;border=1;can_resize=1;can_close=1;can_minimize=0")
 	else
 		to_chat(user, "You do not have a PDA. You should make an issue report about this.")
@@ -1130,6 +1209,15 @@ GLOBAL_LIST_EMPTY(PDAs)
 		if(!P.owner || P.toff || P.hidden)
 			continue
 		. += P
+
+/proc/get_viewable_assistant_pdas()
+	. = list()
+	// Same as above except returns only assistant PDAs
+	for(var/obj/item/pda/P in GLOB.PDAs)
+		if(P.ownjob == "Assistant")
+			if(!P.owner|| P.toff || P.hidden)
+				continue
+			. += P
 
 /obj/item/pda/proc/pda_no_detonate()
 	return COMPONENT_PDA_NO_DETONATE

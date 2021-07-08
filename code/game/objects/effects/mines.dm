@@ -102,16 +102,19 @@
 	to_chat(victim, "<span class='danger'>*click*</span>")
 
 /obj/effect/mine/Crossed(AM as mob|obj)
+	. = ..()
 	if(isturf(loc))
 		if(ismob(AM))
 			var/mob/MM = AM
 			if(!(MM.movement_type & FLYING))
 				checksmartmine(AM)
 		else
+			if(istype(AM, /obj/item/projectile))
+				return
 			triggermine(AM)
 
 /obj/effect/mine/proc/checksmartmine(mob/target)
-	if(smartmine && target && HAS_TRAIT(target, TRAIT_MINDSHIELD))
+	if(smartmine && target && !HAS_TRAIT(target, TRAIT_MINDSHIELD))
 		triggermine(target)
 	else if(!smartmine)
 		triggermine(target)

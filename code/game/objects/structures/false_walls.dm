@@ -24,7 +24,7 @@
 	smooth = SMOOTH_TRUE
 	can_be_unanchored = FALSE
 	CanAtmosPass = ATMOS_PASS_DENSITY
-	rad_flags = RAD_PROTECT_CONTENTS | RAD_NO_CONTAMINATE
+	flags_1 = RAD_PROTECT_CONTENTS_1 | RAD_NO_CONTAMINATE_1
 	rad_insulation = RAD_MEDIUM_INSULATION
 	var/mineral = /obj/item/stack/sheet/metal
 	var/mineral_amount = 2
@@ -41,6 +41,10 @@
 	new /obj/structure/falsewall/brass(loc)
 	qdel(src)
 
+/obj/structure/falsewall/honk_act()
+	new /obj/structure/falsewall/bananium(loc)
+	qdel(src)
+
 /obj/structure/falsewall/attack_hand(mob/user)
 	if(opening)
 		return
@@ -50,13 +54,12 @@
 	toggle(user)
 
 /obj/structure/falsewall/proc/toggle(mob/user)
-	opening = TRUE
-	update_icon()
 	if(!density)
 		var/srcturf = get_turf(src)
 		for(var/mob/living/obstacle in srcturf) //Stop people from using this as a shield
-			opening = FALSE
 			return
+	opening = TRUE
+	update_icon()
 	addtimer(CALLBACK(src, /obj/structure/falsewall/proc/toggle_open), 5)
 
 /obj/structure/falsewall/proc/toggle_open()
@@ -268,6 +271,8 @@
 	walltype = /turf/closed/wall/mineral/bananium
 	canSmoothWith = list(/obj/structure/falsewall/bananium, /turf/closed/wall/mineral/bananium)
 
+/obj/structure/falsewall/bananium/honk_act()
+	return FALSE
 
 /obj/structure/falsewall/sandstone
 	name = "sandstone wall"

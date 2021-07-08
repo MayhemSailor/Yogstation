@@ -7,7 +7,7 @@
 	text_gain_indication = "<span class='notice'>You feel power flow through your hands.</span>"
 	text_lose_indication = "<span class='notice'>The energy in your hands subsides.</span>"
 	power = /obj/effect/proc_holder/spell/targeted/touch/shock
-	instability = 30
+	instability = 20
 	locked = TRUE
 
 /obj/effect/proc_holder/spell/targeted/touch/shock
@@ -18,6 +18,7 @@
 	hand_path = /obj/item/melee/touch_attack/shock
 	charge_max = 100
 	clothes_req = FALSE
+	antimagic_allowed = TRUE
 	icon = 'icons/mob/actions/humble/actions_humble.dmi'
 	action_icon_state = "zap"
 
@@ -30,6 +31,8 @@
 	item_state = "zapper"
 
 /obj/item/melee/touch_attack/shock/afterattack(atom/target, mob/living/carbon/user, proximity)
+	if(!proximity)
+		return
 	if(iscarbon(target))
 		var/mob/living/carbon/C = target
 		if(C.electrocute_act(15, src, 1, FALSE, FALSE, FALSE, FALSE, FALSE))//doesnt stun. never let this stun

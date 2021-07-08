@@ -54,6 +54,7 @@
 			<A href='?src=[REF(src)];[HrefToken()];secrets=quickpower'>Power all SMES</A><BR>
 			<A href='?src=[REF(src)];[HrefToken()];secrets=tripleAI'>Triple AI mode (needs to be used in the lobby)</A><BR>
 			<A href='?src=[REF(src)];[HrefToken()];secrets=traitor_all'>Everyone is the traitor</A><BR>
+			<A href='?src=[REF(src)];[HrefToken()];secrets=iaa_all'>Everyone is the IAA (except sec/cap/hop)</A><BR>
 			<A href='?src=[REF(src)];[HrefToken()];secrets=onlyone'>There can only be one!</A><BR>
 			<A href='?src=[REF(src)];[HrefToken()];secrets=delayed_onlyone'>There can only be one! (40-second delay)</A><BR>
 			<A href='?src=[REF(src)];[HrefToken()];secrets=retardify'>Make all players retarded</A><BR>
@@ -370,6 +371,28 @@
 			message_admins("<span class='adminnotice'>[key_name_admin(usr)] used everyone is a traitor secret. Objective is [objective]</span>")
 			log_admin("[key_name(usr)] used everyone is a traitor secret. Objective is [objective]")
 
+		if("iaa_all")
+			if(!check_rights(R_FUN))
+				return
+			if(!SSticker.HasRoundStarted())
+				alert("The game hasn't started yet!")
+				return
+			SSblackbox.record_feedback("nested tally", "admin_secrets_fun_used", 1, list("IAA All"))
+			for(var/mob/living/H in GLOB.player_list)
+				if(!(ishuman(H)))
+					continue
+				if(H.stat == DEAD || !H.client || !H.mind || ispAI(H))
+					continue
+				if(is_special_character(H))
+					continue
+				var/list/badjobs = list("Security Officer", "Warden", "Detective", "AI", "Cyborg", "Captain", "Head of Personnel", "Head of Security")
+				if(H.mind.assigned_role in badjobs)
+					continue
+				var/datum/antagonist/traitor/internal_affairs/T = new()
+				H.mind.add_antag_datum(T)
+			message_admins("<span class='adminnotice'>[key_name_admin(usr)] used everyone is a iaa secret.</span>")
+			log_admin("[key_name(usr)] used everyone is a iaa secret.")
+
 		if("changebombcap")
 			if(!check_rights(R_FUN))
 				return
@@ -404,7 +427,7 @@
 			SSblackbox.record_feedback("nested tally", "admin_secrets_fun_used", 1, list("Chinese Cartoons"))
 			message_admins("[key_name_admin(usr)] made everything kawaii.")
 			for(var/mob/living/carbon/human/H in GLOB.carbon_list)
-				SEND_SOUND(H, sound('sound/ai/animes.ogg'))
+				SEND_SOUND(H, sound(SSstation.announcer.event_sounds[ANNOUNCER_ANIMES]))
 
 				if(H.dna.species.id == "human")
 					if(H.dna.features["tail_human"] == "None" || H.dna.features["ears"] == "None")
@@ -473,7 +496,7 @@
 				if(is_station_level(W.z) && !istype(get_area(W), /area/bridge) && !istype(get_area(W), /area/crew_quarters) && !istype(get_area(W), /area/security/prison))
 					W.req_access = list()
 			message_admins("[key_name_admin(usr)] activated Egalitarian Station mode")
-			priority_announce("CentCom airlock control override activated. Please take this time to get acquainted with your coworkers.", null, 'sound/ai/commandreport.ogg')
+			priority_announce("CentCom airlock control override activated. Please take this time to get acquainted with your coworkers.", null, SSstation.announcer.get_rand_report_sound())
 
 		if("ancap")
 			if(!check_rights(R_FUN))
@@ -482,9 +505,9 @@
 			SSeconomy.full_ancap = !SSeconomy.full_ancap
 			message_admins("[key_name_admin(usr)] toggled Anarcho-capitalist mode")
 			if(SSeconomy.full_ancap)
-				priority_announce("The NAP is now in full effect.", null, 'sound/ai/commandreport.ogg')
+				priority_announce("The NAP is now in full effect.", null, SSstation.announcer.get_rand_report_sound())
 			else
-				priority_announce("The NAP has been revoked.", null, 'sound/ai/commandreport.ogg')
+				priority_announce("The NAP has been revoked.", null, SSstation.announcer.get_rand_report_sound())
 
 		if("dorf")
 			if(!check_rights(R_FUN))

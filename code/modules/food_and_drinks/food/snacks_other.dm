@@ -34,6 +34,16 @@
 	list_reagents = list(/datum/reagent/consumable/nutriment = 2, /datum/reagent/consumable/sugar = 2, /datum/reagent/consumable/coco = 2)
 	filling_color = "#A0522D"
 	tastes = list("chocolate" = 1)
+	foodtype = JUNKFOOD | SUGAR | CHOCOLATE
+
+/obj/item/reagent_containers/food/snacks/candy_strawberry
+	name = "strawberry flavored candy"
+	desc = "You aren't sure if thats strawberries or blood."
+	icon_state = "candy_strawberry"
+	trash = /obj/item/trash/candy
+	list_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/sugar = 1) //Really crappy because it can easily be mass produced
+	filling_color = "#FF0000"
+	tastes = list("candy" = 10, "strawberries" = 5, "blood" = 1)
 	foodtype = JUNKFOOD | SUGAR
 
 /obj/item/reagent_containers/food/snacks/hugemushroomslice
@@ -107,7 +117,18 @@
 	list_reagents = list(/datum/reagent/consumable/nutriment = 6)
 	filling_color = "#FFD700"
 	tastes = list("fries" = 3, "cheese" = 1)
-	foodtype = VEGETABLES | GRAIN
+	foodtype = VEGETABLES | GRAIN | DAIRY
+
+/obj/item/reagent_containers/food/snacks/poutine
+	name = "poutine"
+	desc = "Fries, cheese, and gravy. Une maudite poutine!"
+	icon_state = "poutine"
+	trash = /obj/item/trash/plate
+	bonus_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 1)
+	list_reagents = list(/datum/reagent/consumable/nutriment = 8, /datum/reagent/consumable/gravy = 6)
+	filling_color = "#5e4b39"
+	tastes = list("gravy" = 3, "cheese" = 1, "fries" = 1)
+	foodtype = VEGETABLES | GRAIN | DAIRY
 
 /obj/item/reagent_containers/food/snacks/badrecipe
 	name = "burned mess"
@@ -193,7 +214,7 @@
 	list_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/coco = 1)
 	filling_color = "#A0522D"
 	tastes = list("chocolate" = 1)
-	foodtype = JUNKFOOD | SUGAR
+	foodtype = JUNKFOOD | SUGAR | CHOCOLATE
 
 /obj/item/reagent_containers/food/snacks/fudgedice
 	name = "fudge dice"
@@ -204,7 +225,7 @@
 	filling_color = "#A0522D"
 	trash = /obj/item/dice/fudge
 	tastes = list("fudge" = 1)
-	foodtype = JUNKFOOD | SUGAR
+	foodtype = JUNKFOOD | SUGAR | CHOCOLATE
 
 /obj/item/reagent_containers/food/snacks/chocoorange
 	name = "chocolate orange"
@@ -214,7 +235,7 @@
 	list_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/sugar = 1)
 	filling_color = "#A0522D"
 	tastes = list("chocolate" = 3, "oranges" = 1)
-	foodtype = JUNKFOOD | SUGAR
+	foodtype = JUNKFOOD | SUGAR | CHOCOLATE
 
 /obj/item/reagent_containers/food/snacks/eggplantparm
 	name = "eggplant parmigiana"
@@ -243,6 +264,16 @@
 	icon_state = "burrito"
 	bonus_reagents = list(/datum/reagent/consumable/nutriment = 2, /datum/reagent/consumable/nutriment/vitamin = 2)
 	list_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/nutriment/vitamin = 1)
+	filling_color = "#FFEFD5"
+	tastes = list("torilla" = 2, "meat" = 3)
+	foodtype = GRAIN | MEAT
+
+/obj/item/reagent_containers/food/snacks/fivelayerburrito
+	name = "five layer burrito"
+	desc = "Five burritos stacked on top of each other. It looks suspiciously like a layer manifold."
+	icon_state = "fivelayerburrito"
+	bonus_reagents = list(/datum/reagent/consumable/nutriment = 12, /datum/reagent/consumable/nutriment/vitamin = 12)
+	list_reagents = list(/datum/reagent/consumable/nutriment = 20, /datum/reagent/consumable/nutriment/vitamin = 5)
 	filling_color = "#FFEFD5"
 	tastes = list("torilla" = 2, "meat" = 3)
 	foodtype = GRAIN | MEAT
@@ -364,7 +395,7 @@
 	name = "stuffed legion"
 	desc = "The former skull of a damned human, filled with goliath meat. It has a decorative lava pool made of ketchup and hotsauce."
 	icon_state = "stuffed_legion"
-	bonus_reagents = list(/datum/reagent/consumable/nutriment/vitamin = 3, /datum/reagent/consumable/capsaicin = 1, /datum/reagent/medicine/tricordrazine = 5)
+	bonus_reagents = list(/datum/reagent/consumable/nutriment/vitamin = 5, /datum/reagent/consumable/capsaicin = 1, /datum/reagent/medicine/tricordrazine = 5, /datum/reagent/medicine/lavaland_extract = 1)
 	list_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/nutriment/vitamin = 5, /datum/reagent/consumable/capsaicin = 2, /datum/reagent/medicine/tricordrazine = 10)
 	tastes = list("death" = 2, "rock" = 1, "meat" = 1, "hot peppers" = 1)
 	foodtype = MEAT
@@ -431,7 +462,7 @@
 	desc = "A colorful, sugary gumball."
 	icon = 'icons/obj/lollipop.dmi'
 	icon_state = "gumball"
-	list_reagents = list(/datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/bicaridine = 2, /datum/reagent/medicine/kelotane = 2)	//Kek
+	list_reagents = list(/datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/c2/libital = 2, /datum/reagent/medicine/c2/aiuri = 2)	//Kek
 	tastes = list("candy")
 	foodtype = JUNKFOOD
 
@@ -516,14 +547,15 @@
 	list_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/sugar = 1, /datum/reagent/consumable/coco = 1)
 	filling_color = "#A0522D"
 	tastes = list("chocolate" = 1)
-	foodtype = JUNKFOOD | SUGAR
+	foodtype = JUNKFOOD | SUGAR | CHOCOLATE
 
 /obj/item/reagent_containers/food/snacks/cannedpeaches
 	name = "Canned Peaches"
 	desc = "A nice can of ripe peaches swimming in their own juices, somehow left untouched."
 	icon_state = "peachcan"
-	grind_results = null
+	list_reagents = list(/datum/reagent/consumable/peachjuice = 8, /datum/reagent/consumable/sugar = 4, /datum/reagent/consumable/nutriment = 4)
 	juice_results = list(/datum/reagent/consumable/peachjuice = 20, /datum/reagent/consumable/sugar = 8, /datum/reagent/consumable/nutriment = 2)
+	grind_results = null
 	filling_color = "#ffdf26"
 	w_class = WEIGHT_CLASS_NORMAL
 	tastes = list("peaches" = 7, "tin" = 1)
@@ -538,7 +570,7 @@
 /obj/item/reagent_containers/food/snacks/dolphincereal
 	name = "dolphin cereal"
 	desc = "Finest dolphin skin flakes. This looks flippin' disgusting."
-	icon = 'yogstation/icons/obj/food/food.dmi'
+	icon = 'icons/obj/food/food.dmi'
 	icon_state = "dolphincereal"
 	bonus_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 1)
 	list_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/nutriment/vitamin = 2)
@@ -547,7 +579,7 @@
 /obj/item/reagent_containers/food/snacks/dolphinandchips
 	name = "dolphin and chips"
 	desc = "Dolphin and chips, wrapped in the finest newspaper from the clown's newscaster channel."
-	icon = 'yogstation/icons/obj/food/food.dmi'
+	icon = 'icons/obj/food/food.dmi'
 	icon_state = "dolphinandchips"
 	bonus_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 1)
 	list_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/nutriment/vitamin = 2)
@@ -556,7 +588,7 @@
 /obj/item/reagent_containers/food/snacks/youmonster
 	name = "full dolphin platter"
 	desc = "A whole dolphin. Good luck eating this. (WARNING: do not consume any wafer thin mints after consumption)"
-	icon = 'yogstation/icons/obj/food/food.dmi'
+	icon = 'icons/obj/food/food.dmi'
 	icon_state = "youmonster"
 	bonus_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 1)
 	list_reagents = list(/datum/reagent/consumable/nutriment = 100, /datum/reagent/consumable/nutriment/vitamin = 2)

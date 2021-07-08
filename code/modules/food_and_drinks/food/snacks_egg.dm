@@ -9,7 +9,7 @@
 	list_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/sugar = 2, /datum/reagent/consumable/coco = 2)
 	filling_color = "#A0522D"
 	tastes = list("chocolate" = 4, "sweetness" = 1)
-	foodtype = JUNKFOOD | SUGAR | EGG
+	foodtype = JUNKFOOD | SUGAR | EGG | CHOCOLATE
 
 /obj/item/reagent_containers/food/snacks/egg
 	name = "egg"
@@ -20,16 +20,21 @@
 	filling_color = "#F0E68C"
 	foodtype = MEAT | EGG
 	grind_results = list()
+	var/mob/living/egg_rper
 
 /obj/item/reagent_containers/food/snacks/egg/suicide_act(mob/living/carbon/user)
 	user.visible_message("<span class='suicide'>[user] RPs as [src]!</span>")
 	if(istype(user) && user.mind)
-		var/mob/living/brain/B = new(src)
-		B.real_name = name
-		B.name = name
-		B.stat = CONSCIOUS
-		user.mind.transfer_to(B)
+		egg_rper = new(src)
+		egg_rper.real_name = name
+		egg_rper.name = name
+		egg_rper.stat = CONSCIOUS
+		user.mind.transfer_to(egg_rper)
 	return BRUTELOSS
+
+/obj/item/reagent_containers/food/snacks/egg/Destroy()
+	qdel(egg_rper)
+	. = ..()
 
 /obj/item/reagent_containers/food/snacks/egg/gland
 	desc = "An egg! It looks weird..."
