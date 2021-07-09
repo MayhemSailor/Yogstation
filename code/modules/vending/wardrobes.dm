@@ -23,6 +23,7 @@
 					/obj/item/clothing/under/rank/security = 3,
 					/obj/item/clothing/under/yogs/armyuniform = 3,
 					/obj/item/clothing/shoes/jackboots = 3,
+					/obj/item/clothing/shoes/xeno_wraps/jackboots = 3,
 					/obj/item/clothing/head/beret/sec = 3,
 					/obj/item/clothing/head/beret/corpsec = 3,
 					/obj/item/clothing/head/soft/sec = 3,
@@ -70,7 +71,7 @@
 					/obj/item/clothing/under/rank/medical/green = 4,
 					/obj/item/clothing/under/rank/medical/purple = 4,
 					/obj/item/clothing/under/rank/medical = 4,
-					/obj/item/clothing/suit/toggle/labcoat = 4,
+					/obj/item/clothing/suit/toggle/labcoat/md = 4,
 					/obj/item/clothing/suit/toggle/labcoat/emt = 4,
 					/obj/item/clothing/shoes/sneakers/white = 4,
 					/obj/item/clothing/head/soft/emt = 4,
@@ -346,7 +347,8 @@
 					/obj/item/clothing/shoes/galoshes = 2,
 					/obj/item/watertank/janitor = 2,
 					/obj/item/storage/belt/janitor = 2,
-					/obj/item/clothing/accessory/armband/service = 1)
+					/obj/item/clothing/accessory/armband/service = 1,
+					/obj/item/reagent_containers/spray/cleaner = 1)
 	refill_canister = /obj/item/vending_refill/wardrobe/jani_wardrobe
 	payment_department = ACCOUNT_SRV
 /obj/item/vending_refill/wardrobe/jani_wardrobe
@@ -389,6 +391,7 @@
 	vend_reply = "Thank you for using the ChapDrobe!"
 	products = list(/obj/item/choice_beacon/holy = 1,
 					/obj/item/storage/backpack/cultpack = 1,
+					/obj/item/reagent_containers/glass/urn = 10,
 					/obj/item/clothing/accessory/pocketprotector/cosmetology = 1,
 					/obj/item/clothing/under/rank/chaplain = 1,
 					/obj/item/clothing/under/rank/chaplain/skirt = 2,
@@ -406,8 +409,7 @@
 					/obj/item/clothing/head/kippah = 3,
 					/obj/item/clothing/suit/chaplainsuit/whiterobe = 1,
 					/obj/item/clothing/head/taqiyahwhite = 1,
-					/obj/item/clothing/head/taqiyahred = 3,
-					/obj/item/clothing/head/beanie/rasta = 1)
+					/obj/item/clothing/head/taqiyahred = 3)
 	contraband = list(/obj/item/toy/plush/plushvar = 1,
 					/obj/item/toy/plush/narplush = 1,
 					/obj/item/clothing/head/medievaljewhat = 3,

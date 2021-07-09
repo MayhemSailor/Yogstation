@@ -49,6 +49,7 @@
 	desc = "A thick vine, painful to the touch."
 
 /obj/effect/ebeam/vine/Crossed(atom/movable/AM)
+	. = ..()
 	if(isliving(AM))
 		var/mob/living/L = AM
 		if(!isvineimmune(L))
@@ -83,6 +84,7 @@
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	unsuitable_atmos_damage = 0
+	sight = SEE_SELF|SEE_MOBS|SEE_OBJS|SEE_TURFS
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 	faction = list("hostile","vines","plants")
 	initial_language_holder = /datum/language_holder/venus
@@ -99,6 +101,10 @@
 /mob/living/simple_animal/hostile/venus_human_trap/Life()
 	. = ..()
 	pull_vines()
+	if(!kudzu_need())
+		adjustHealth(-5)
+		if(prob(20))
+			to_chat(src, "<span class='danger'>You wither away without the support of the kudzu...</span>")
 	
 /mob/living/simple_animal/hostile/venus_human_trap/AttackingTarget()
 	. = ..()
@@ -113,7 +119,7 @@
 			pull_vines()
 			ranged_cooldown = world.time + (ranged_cooldown_time * 0.5)
 			return
-	if(get_dist(src,the_target) > vine_grab_distance || vines.len == max_vines)
+	if(get_dist(src,the_target) > vine_grab_distance || vines.len >= max_vines)
 		return
 	for(var/turf/T in getline(src,target))
 		if (T.density)
@@ -184,5 +190,17 @@
   * Arguments:
   * * datum/beam/vine - The vine to be removed from the list.
   */
-mob/living/simple_animal/hostile/venus_human_trap/proc/remove_vine(datum/beam/vine, force)
+/mob/living/simple_animal/hostile/venus_human_trap/proc/remove_vine(datum/beam/vine, force)
 	vines -= vine
+
+/**
+  * Damages the human trap if they're >3 tiles away from a kudzu
+  *
+  * Checks if there is a kudzu within 3 tiles
+  * Damages the mob if not
+  */
+/mob/living/simple_animal/hostile/venus_human_trap/proc/kudzu_need()
+	for(var/obj/structure/spacevine in view(3,src))
+		return TRUE
+	return FALSE
+		

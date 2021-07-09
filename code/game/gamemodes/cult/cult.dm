@@ -8,7 +8,7 @@
 	var/bloodstone_cooldown = FALSE
 
 /proc/iscultist(mob/living/M)
-	return istype(M) && M.mind && M.mind.has_antag_datum(/datum/antagonist/cult)
+	return M?.mind?.has_antag_datum(/datum/antagonist/cult)
 
 /datum/team/cult/proc/is_sacrifice_target(datum/mind/mind)
 	for(var/datum/objective/sacrifice/sac_objective in objectives)
@@ -28,6 +28,8 @@
 			return FALSE
 		if(M.mind.unconvertable)
 			return FALSE
+		if(M.is_convert_antag())
+			return FALSE
 	else
 		return FALSE
 	if(HAS_TRAIT(M, TRAIT_MINDSHIELD) || issilicon(M) || isbot(M) || isdrone(M) || ismouse(M) || is_servant_of_ratvar(M) || !M.client)
@@ -40,12 +42,13 @@
 	report_type = "cult"
 	antag_flag = ROLE_CULTIST
 	false_report_weight = 10
-	restricted_jobs = list("Chaplain","AI", "Cyborg", "Security Officer", "Warden", "Detective", "Head of Security", "Captain", "Head of Personnel")
+	restricted_jobs = list("Chaplain","AI", "Cyborg", "Security Officer", "Warden", "Detective", "Head of Security", "Captain", "Head of Personnel", "Research Director", "Chief Engineer", "Chief Medical Officer")
 	protected_jobs = list()
 	required_players = 29
 	required_enemies = 4
 	recommended_enemies = 4
 	enemy_minimum_age = 14
+	title_icon = "cult"
 
 	announce_span = "cult"
 	announce_text = "Some crew members are trying to start a cult to Nar-Sie!\n\
@@ -102,6 +105,12 @@
 	main_cult.setup_objectives() //Wait until all cultists are assigned to make sure none will be chosen as sacrifice.
 
 	. = ..()
+
+/datum/game_mode/cult/check_finished(force_ending)
+	if (..())
+		return TRUE
+
+	return 1 - main_cult.check_sacrifice_status()
 
 /datum/game_mode/proc/add_cultist(datum/mind/cult_mind, stun , equip = FALSE, datum/team/cult/cult_team = null)
 	if (!istype(cult_mind))
@@ -260,5 +269,25 @@
 			L.maxHealth = initial(L.maxHealth)
 			to_chat(L, "<span class='cult'>Your form regains its original durability!</span>")
 	//send message to cultists saying they can do stuff again
+
+/datum/game_mode/cult/generate_credit_text()
+	var/list/round_credits = list()
+	var/len_before_addition
+
+	round_credits += "<center><h1>The Cult of Nar'Sie:</h1>"
+	len_before_addition = round_credits.len
+	for(var/datum/mind/cultist in cult)
+		round_credits += "<center><h2>[cultist.name] as a cult fanatic</h2>"
+
+	var/datum/objective/eldergod/summon_objective = locate() in main_cult.objectives
+	if(summon_objective && summon_objective.summoned)
+		round_credits += "<center><h2>Nar'Sie as the eldritch abomination</h2>"
+
+	if(len_before_addition == round_credits.len)
+		round_credits += list("<center><h2>The cultists have learned the danger of eldritch magic!</h2>", "<center><h2>They all disappeared!</h2>")
+		round_credits += "<br>"
+
+	round_credits += ..()
+	return round_credits
 
 #undef CULT_SCALING_COEFFICIENT

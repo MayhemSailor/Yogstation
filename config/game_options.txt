@@ -92,32 +92,31 @@ ALERT_DELTA Destruction of the station is imminent. All crew are instructed to o
 ## Default probablity is 1, increase to make that mode more likely to be picked.
 ## Set to 0 to disable that mode.
 
+# New
+PROBABILITY DARKSPAWN 6
+PROBABILITY HERESY 4
+
 # Lowpop
-PROBABILITY TRAITOR 6
-PROBABILITY TRAITORBRO 6
+PROBABILITY TRAITOR 5
+PROBABILITY TRAITORBRO 5
 PROBABILITY TRAITORCHAN 6
+PROBABILITY TRAITORVAMP 4
 PROBABILITY INTERNAL_AFFAIRS 3
-PROBABILITY CHANGELING 3
+PROBABILITY CHANGELING 4
+PROBABILITY VAMPIRE 4
 
 # Group antags
-PROBABILITY REVOLUTION 9
+PROBABILITY REVOLUTION 8
+PROBABILITY GANG 6
+PROBABILITY CULT 5
 PROBABILITY CLOCKWORK_CULT 5
-PROBABILITY GANG 5
-PROBABILITY CULT 9
 
 # Snowflakes
-PROBABILITY SHADOWLING 4
-PROBABILITY WIZARD 7
+PROBABILITY SHADOWLING 6
+PROBABILITY WIZARD 8
 PROBABILITY NUCLEAR 9
-PROBABILITY MALF 6
-PROBABILITY CLOWNOPS 0
-PROBABILITY MALFUNCTION 6
-
-# New
-PROBABILITY HIVEMIND 0
-PROBABILITY OVERTHROW 0
-PROBABILITY TRAITORVAMP 2
-PROBABILITY VAMPIRE 2
+PROBABILITY MALF 8
+PROBABILITY CLOWNOPS 0 #Broke
 
 # Special
 PROBABILITY RAGINMAGES 1
@@ -127,6 +126,7 @@ PROBABILITY EXTENDED 0
 PROBABILITY SECRET_EXTENDED 0
 PROBABILITY DEVIL 0
 PROBABILITY DEVIL_AGENTS 0
+PROBABILITY ZOMBIE 1
 
 ## Percent weight reductions for three of the most recent modes
 
@@ -147,13 +147,16 @@ CONTINUOUS CHANGELING
 CONTINUOUS WIZARD
 CONTINUOUS HIVEMIND
 CONTINUOUS MALF
+CONTINUOUS SHADOWLING
+CONTINUOUS VAMPIRE
+CONTINUOUS DYNAMIC
+CONTINUOUS HERESY
 
 ##Note: do not toggle continuous off for these modes, as they have no antagonists and would thus end immediately!
 
 CONTINUOUS METEOR
 CONTINUOUS EXTENDED
 CONTINUOUS SECRET_EXTENDED
-
 
 ## Toggles for allowing midround antagonists (aka mulligan antagonists).
 ## In modes that are continuous, if all antagonists should die then a new set of antagonists will be created.
@@ -222,8 +225,6 @@ MIDROUND_ANTAG MALF
 ## Setting at least one mode to be playable at 0/1 players is required.
 #MIN_POP EXTENDED 0
 #MAX_POP EXTENDED -1
-
-
 
 ## The amount of time it takes for the emergency shuttle to be called, from round start.
 SHUTTLE_REFUEL_DELAY 12000
@@ -326,7 +327,7 @@ GATEWAY_DELAY 18000
 ## If the number of players ready at round starts exceeds this threshold, JOBS_HAVE_MINIMAL_ACCESS will automatically be enabled. Otherwise, it will be disabled.
 ## This is useful for accomodating both low and high population rounds on the same server.
 ## Comment this out or set to 0 to disable this automatic toggle.
-MINIMAL_ACCESS_THRESHOLD 8
+MINIMAL_ACCESS_THRESHOLD 18
 
 ## Comment this out this if you wish to use the setup where jobs have more access.
 ## This is intended for servers with low populations - where there are not enough
@@ -375,18 +376,19 @@ DEFAULT_LAWS 3
 
 ## standard-ish laws. These are fairly ok to run
 RANDOM_LAWS asimov
-RANDOM_LAWS asimovpp
-RANDOM_LAWS paladin
-RANDOM_LAWS robocop
-RANDOM_LAWS corporate
+#RANDOM_LAWS asimovpp
+#RANDOM_LAWS paladin
+#RANDOM_LAWS robocop
+#RANDOM_LAWS corporate
+RANDOM_LAWS ceo
 
 ## Quirky laws. Shouldn't cause too much harm
-RANDOM_LAWS hippocratic
-RANDOM_LAWS maintain
+#RANDOM_LAWS hippocratic
+#RANDOM_LAWS maintain
 #RANDOM_LAWS drone
-RANDOM_LAWS liveandletlive
-RANDOM_LAWS peacekeeper
-#RANDOM_LAWS reporter
+#RANDOM_LAWS liveandletlive
+#RANDOM_LAWS peacekeeper
+RANDOM_LAWS reporter
 #RANDOM_LAWS hulkamania
 
 ## Bad idea laws. Probably shouldn't enable these
@@ -407,19 +409,21 @@ RANDOM_LAWS peacekeeper
 LAW_WEIGHT custom,0
 
 ## standard-ish laws. These are fairly ok to run
-LAW_WEIGHT asimov,32
-LAW_WEIGHT asimovpp,12
-LAW_WEIGHT paladin,12
-LAW_WEIGHT robocop,12
-LAW_WEIGHT corporate,12
+LAW_WEIGHT asimov,6
+LAW_WEIGHT crewsimov,6
+LAW_WEIGHT asimovpp,0
+LAW_WEIGHT paladin,0
+LAW_WEIGHT robocop,0
+LAW_WEIGHT corporate,0
+LAW_WEIGHT ceo,6
 
 ## Quirky laws. Shouldn't cause too much harm
-LAW_WEIGHT hippocratic,3
-LAW_WEIGHT maintain,4
+LAW_WEIGHT hippocratic,0
+LAW_WEIGHT maintain,0
 LAW_WEIGHT drone,0
-LAW_WEIGHT liveandletlive,3
-LAW_WEIGHT peacekeeper,3
-LAW_WEIGHT reporter,0
+LAW_WEIGHT liveandletlive,0
+LAW_WEIGHT peacekeeper,0
+LAW_WEIGHT reporter,3
 
 ## Bad idea laws. Probably shouldn't enable these
 LAW_WEIGHT syndie,0
@@ -460,6 +464,7 @@ ROUNDSTART_RACES moth
 ROUNDSTART_RACES plasmaman
 #ROUNDSTART_RACES shadow
 ROUNDSTART_RACES preternis
+ROUNDSTART_RACES polysmorph
 #ROUNDSTART_RACES snail
 
 ## Races that are better than humans in some ways, but worse in others
@@ -482,6 +487,9 @@ ROUNDSTART_RACES ethereal
 ROUNDSTART_RACES pod
 #ROUNDSTART_RACES military_synth
 #ROUNDSTART_RACES agent
+
+## Races that are for EPIC GAMERS only
+#MENTOR_RACES polysmorph
 
 ##-------------------------------------------------------------------------------------------
 
@@ -587,3 +595,9 @@ DISABLE_HUMAN_MOOD
 
 ## Enable the capitalist agenda on your server.
 ECONOMY
+
+## Uncomment to enable dynamic ruleset config file.
+DYNAMIC_CONFIG_ENABLED
+
+## Force Engine - 1 for SM, 2 for Sing/Tesla, 3 for any, 4 for TEG
+ENGINE_TYPE 3

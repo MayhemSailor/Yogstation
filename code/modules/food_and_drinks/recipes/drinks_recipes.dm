@@ -19,11 +19,11 @@
 	results = list(/datum/reagent/consumable/ethanol/bilk = 2)
 	required_reagents = list(/datum/reagent/consumable/milk = 1, /datum/reagent/consumable/ethanol/beer = 1)
 	
-/datum/chemical_reaction/bilk
+/datum/chemical_reaction/soy_bilk
 	name = "Soy Bilk"
 	id = /datum/reagent/consumable/ethanol/bilk/soy
 	results = list(/datum/reagent/consumable/ethanol/bilk/soy = 2)
-	required_reagents = list(/datum/reagent/consumable/soymilk, /datum/reagent/consumable/ethanol/beer = 1)
+	required_reagents = list(/datum/reagent/consumable/soymilk = 1, /datum/reagent/consumable/ethanol/beer = 1)
 	
 /datum/chemical_reaction/icetea
 	name = "Iced Tea"
@@ -805,6 +805,43 @@
 
 /datum/chemical_reaction/catsip
 	name = "Catsip"
+	id = /datum/reagent/consumable/ethanol/catsip
 	results = list(/datum/reagent/consumable/ethanol/catsip = 4)
 	required_reagents = list(/datum/reagent/consumable/ethanol/sake = 2, /datum/reagent/consumable/soymilk = 2, /datum/reagent/consumable/corn_syrup = 1, /datum/reagent/consumable/grenadine = 1)
- 
+
+/datum/chemical_reaction/flaming_moe
+	name = "Flaming Moe"
+	required_temp = 500
+	id = /datum/reagent/consumable/ethanol/flaming_moe
+	results = list(/datum/reagent/consumable/ethanol/flaming_moe = 3)
+	required_reagents = list(/datum/reagent/consumable/ethanol/tequila = 1, /datum/reagent/consumable/ethanol/creme_de_menthe = 1, /datum/reagent/medicine/synaptizine = 1)
+
+/datum/chemical_reaction/ratvarnac
+	name = "Justiciar Juice"
+	id = /datum/reagent/consumable/ethanol/ratvarnac
+	results = list(/datum/reagent/consumable/ethanol/ratvarnac = 4)
+	required_reagents = list(/datum/reagent/consumable/lemonjuice = 1, /datum/reagent/consumable/ethanol/cognac = 1, /datum/reagent/iron = 1, /datum/reagent/consumable/ethanol/tequila_sunrise = 1)
+
+/datum/chemical_reaction/godfather
+	name = "Godfather"
+	id = /datum/reagent/consumable/ethanol/godfather
+	results = list(/datum/reagent/consumable/ethanol/godfather = 2)
+	required_reagents = list(/datum/reagent/consumable/ethanol/amaretto = 1, /datum/reagent/consumable/ethanol/whiskey = 1)
+
+/datum/chemical_reaction/godmother
+	name = "Godmother"
+	id = /datum/reagent/consumable/ethanol/godmother
+	results = list(/datum/reagent/consumable/ethanol/godmother = 2)
+	required_reagents = list(/datum/reagent/consumable/ethanol/amaretto = 1, /datum/reagent/consumable/ethanol/vodka = 1)
+
+/datum/chemical_reaction/amaretto_alexander
+	name = "Amaretto Alexander"
+	id = /datum/reagent/consumable/ethanol/amaretto_alexander
+	results = list(/datum/reagent/consumable/ethanol/amaretto_alexander = 3)
+	required_reagents = list(/datum/reagent/consumable/ethanol/amaretto = 1, /datum/reagent/consumable/ethanol/creme_de_cacao = 1, /datum/reagent/consumable/cream = 1)
+
+/datum/chemical_reaction/ginger_amaretto
+	name = "Ginger Amaretto"
+	id = /datum/reagent/consumable/ethanol/ginger_amaretto
+	results = list(/datum/reagent/consumable/ethanol/ginger_amaretto = 4)
+	required_reagents = list(/datum/reagent/consumable/ethanol/amaretto = 1, /datum/reagent/consumable/sol_dry = 1, /datum/reagent/consumable/ice = 1, /datum/reagent/consumable/lemonjuice = 1)

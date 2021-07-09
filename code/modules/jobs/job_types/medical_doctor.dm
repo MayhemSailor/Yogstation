@@ -40,8 +40,8 @@
 	ears = /obj/item/radio/headset/headset_med
 	uniform = /obj/item/clothing/under/rank/medical
 	shoes = /obj/item/clothing/shoes/sneakers/white
-	suit =  /obj/item/clothing/suit/toggle/labcoat
-	l_hand = /obj/item/storage/firstaid/regular
+	suit =  /obj/item/clothing/suit/toggle/labcoat/md
+	l_hand = /obj/item/storage/firstaid/medical
 	suit_store = /obj/item/flashlight/pen
 
 	backpack = /obj/item/storage/backpack/medic

@@ -24,7 +24,7 @@
 /datum/chemical_reaction/methamphetamine
 	name = /datum/reagent/drug/methamphetamine
 	id = /datum/reagent/drug/methamphetamine
-	results = list(/datum/reagent/drug/methamphetamine = 5)
+	results = list(/datum/reagent/drug/methamphetamine = 4)
 	required_reagents = list(/datum/reagent/medicine/ephedrine = 1, /datum/reagent/iodine = 1, /datum/reagent/phosphorus = 1, /datum/reagent/hydrogen = 1, /datum/reagent/toxin/acid/fluacid = 1)
 	required_temp = 374
 
@@ -56,3 +56,9 @@
 	results = list(/datum/reagent/drug/happiness = 4)
 	required_reagents = list(/datum/reagent/nitrous_oxide = 2, /datum/reagent/medicine/epinephrine = 1, /datum/reagent/consumable/ethanol = 1)
 	required_catalysts = list(/datum/reagent/toxin/plasma = 5)
+
+/datum/chemical_reaction/pumpup
+	name = "Pump-Up"
+	id = /datum/reagent/drug/pumpup
+	results = list(/datum/reagent/drug/pumpup = 5)
+	required_reagents = list(/datum/reagent/medicine/epinephrine = 2, /datum/reagent/consumable/coffee = 5)

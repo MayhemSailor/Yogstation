@@ -146,10 +146,10 @@
 
 	friend_talk(message)
 
-/mob/camera/imaginary_friend/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, message_mode)
+/mob/camera/imaginary_friend/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
 	if (client?.prefs.chat_on_map && (client.prefs.see_chat_non_mob || ismob(speaker)))
-		create_chat_message(speaker, message_language, raw_message, spans, message_mode)
-	to_chat(src, compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mode))
+		create_chat_message(speaker, message_language, raw_message, spans)
+	to_chat(src, compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mods))
 
 /mob/camera/imaginary_friend/proc/friend_talk(message)
 	message = capitalize(trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN)))
@@ -171,9 +171,11 @@
 		MA.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 		INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, MA, list(owner.client), 30)
 
-	for(var/mob/M in GLOB.dead_mob_list)
-		var/link = FOLLOW_LINK(M, owner)
-		to_chat(M, "[link] [dead_rendered]")
+	for(var/mob/dead/observer/M in GLOB.dead_mob_list)
+		if(M.client)
+			if(M.client.prefs.chat_toggles & CHAT_GHOSTEARS)
+				var/link = FOLLOW_LINK(M, owner)
+				to_chat(M, "[link] [dead_rendered]")
 
 /mob/camera/imaginary_friend/Move(NewLoc, Dir = 0)
 	if(world.time < move_delay)

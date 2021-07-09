@@ -113,6 +113,10 @@
 	spawn_type = /obj/item/candle
 	fancy_open = TRUE
 
+/obj/item/storage/box/fancy/candle_box/attack_self(mob_user)
+	. = ..()
+	update_icon()
+
 /obj/item/storage/box/fancy/candle_box/ComponentInitialize()
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
@@ -133,6 +137,7 @@
 	slot_flags = ITEM_SLOT_BELT
 	icon_type = "cigarette"
 	spawn_type = /obj/item/clothing/mask/cigarette/space_cigarette
+	age_restricted = TRUE
 
 /obj/item/storage/box/fancy/cigarettes/ComponentInitialize()
 	. = ..()
@@ -324,7 +329,7 @@
 
 /obj/item/storage/box/fancy/cigarettes/cigars/cohiba
 	name = "\improper Cohiba Robusto cigar case"
-	desc = "A case of imported Cohiba cigars, renowned for their strong flavor."
+	desc = "A case of imported Cohiba cigars, renowned for their strong flavor. The warning label states that the cigar is extremely potent."
 	icon_state = "cohibacase"
 	spawn_type = /obj/item/clothing/mask/cigarette/cigar/cohiba
 

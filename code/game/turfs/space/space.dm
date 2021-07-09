@@ -28,6 +28,7 @@
 	return
 
 /turf/open/space/Initialize()
+	SHOULD_CALL_PARENT(FALSE)
 	icon_state = SPACE_ICON_STATE
 	air = space_gas
 	update_air_ref()
@@ -75,6 +76,10 @@
 
 /turf/open/space/Assimilate_Air()
 	return
+
+//IT SHOULD RETURN NULL YOU MONKEY, WHY IN TARNATION WHAT THE FUCKING FUCK
+/turf/open/space/remove_air(amount)
+	return null
 
 /turf/open/space/proc/update_starlight()
 	if(CONFIG_GET(flag/starlight))

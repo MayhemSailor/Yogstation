@@ -44,6 +44,7 @@
 			movement_range = 0
 
 /obj/effect/accelerated_particle/Crossed(atom/A)
+	. = ..()
 	if(isliving(A))
 		toxmob(A)
 
@@ -62,9 +63,8 @@
 		return
 	if(!step(src,dir))
 		forceMove(get_step(src,dir))
-	movement_range--
 	if(movement_range == 0)
 		qdel(src)
-	else
-		sleep(speed)
-		move()
+		return
+	movement_range--
+	addtimer(CALLBACK(src, .proc/move), speed)

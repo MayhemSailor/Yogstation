@@ -5,6 +5,7 @@ GLOBAL_LIST_EMPTY(ninja_capture)
 	antagpanel_category = "Ninja"
 	job_rank = ROLE_NINJA
 	show_name_in_check_antagonists = TRUE
+	show_to_ghosts = TRUE
 	antag_moodlet = /datum/mood_event/focused
 	var/helping_station = FALSE
 	var/give_objectives = TRUE
@@ -26,7 +27,7 @@ GLOBAL_LIST_EMPTY(ninja_capture)
 	var/mob/living/M = mob_override || owner.current
 	for(var/obj/item/implant/explosive/E in M.implants)
 		if(E)
-			UnregisterSignal(M, COMSIG_IMPLANT_ACTIVATED, .proc/on_death)
+			UnregisterSignal(M, COMSIG_IMPLANT_ACTIVATED)
 	update_ninja_icons_removed(M)
 
 /datum/antagonist/ninja/proc/equip_space_ninja(mob/living/carbon/human/H = owner.current)
@@ -114,7 +115,7 @@ GLOBAL_LIST_EMPTY(ninja_capture)
 	return TRUE
 
 /proc/is_ninja(mob/living/M)
-	return M && M.mind && M.mind.has_antag_datum(/datum/antagonist/ninja)
+	return M?.mind?.has_antag_datum(/datum/antagonist/ninja)
 
 
 /datum/antagonist/ninja/greet()
